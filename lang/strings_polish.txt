@@ -1,0 +1,4 @@
+<?php
+
+$s_plugin_Awards_name = 'Nagrody';
+$s_plugin_Awards_description = 'Wtyczka do nagradzania za pomocą em😂ji.';

@@ -1,0 +1,4 @@
+<?php
+
+$s_plugin_Awards_name = 'Awards';
+$s_plugin_Awards_description = 'Plugin for rewarding with em😂jis.';
