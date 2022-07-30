@@ -162,7 +162,9 @@ class Plugin extends TermitePlugin
         plugin_push_current($this->basename);
         $parameters = array_map('intval', $request->getParams(['bugnote_id', 'emoji']));
 
-        cast_bugnote_vote(...$parameters);
+        if (!current_user_is_anonymous()) {
+            cast_bugnote_vote(...$parameters);
+        }
 
         $this->displayBugnoteAwards($parameters['bugnote_id']);
     }
