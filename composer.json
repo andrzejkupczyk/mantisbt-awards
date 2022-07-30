@@ -10,7 +10,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/thewebgarden/mantisbt-awards/issues"
+        "issues": "https://github.com/andrzejkupczyk/mantisbt-awards/issues"
     },
     "repositories": [
         {
@@ -33,9 +33,6 @@
         "mantisbt/mantisbt": "dev-master"
     },
     "autoload": {
-        "psr-4": {
-            "WebGarden\\MantisAwards\\": "src/"
-        },
         "files": [
             "core/awards_api.php"
         ]
@@ -49,6 +46,7 @@
         }
     },
     "extra": {
+        "installer-name": "Awards",
         "branch-alias": {
             "dev-main": "1.x-dev"
         }
