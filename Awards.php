@@ -85,7 +85,7 @@ final class AwardsPlugin extends TermitePlugin
             ? $this->votes
             : fetch_bugnote_votes($bugnoteId);
 
-        include __DIR__ . '/../components/list.php';
+        include __DIR__ . '/components/list.php';
     }
 
     /**
