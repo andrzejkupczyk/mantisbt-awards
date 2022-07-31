@@ -41,8 +41,7 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "platform": {
-            "php": "7.0.0",
-            "ext-gd": "2.3.3"
+            "php": "7.0.0"
         }
     },
     "extra": {
