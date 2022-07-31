@@ -4,15 +4,13 @@
 
 This plugin allows users to quickly give and receive feedback.
 
-Emojis can be awarded on comments, but more "awardable" objects will be supported in the near future. 
+Emojis can be awarded on comments (known as bugnotes or activities), but more "awardable" objects will be supported in the near future. 
 
-## Install
+## Installation
 
-MantisBT Awards plugin is packaged with [Composer](https://getcomposer.org/).  
+MantisBT Awards is packaged with [Composer](https://getcomposer.org/) which installs the plugin to the `plugins/Awards` directory:
 
 `composer require webgarden/mantisbt-awards`
-
-This will install the plugin to the `plugins/Awards` folder of your MantisBT instance.
 
 ## Translations
 

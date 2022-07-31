@@ -1,6 +1,6 @@
 {
     "name": "webgarden/mantisbt-awards",
-    "description": "Emojis rewarding plugin for the MantisBT",
+    "description": "Emoji awards for the MantisBT",
     "type": "mantisbt-plugin",
     "license": "MIT",
     "authors": [
