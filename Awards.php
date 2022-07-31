@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use JetBrains\PhpStorm\ArrayShape;
+use Slim\App;
 use WebGarden\Termite\TermitePlugin;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
