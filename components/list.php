@@ -17,7 +17,7 @@
           title="<?= string_html_entities($castedVotes['voters_usernames']) ?>"
           class="btn <?= $currentUserVoted ? 'btn-primary' : '' ?> btn-xs btn-white btn-round"
           <?php if (!current_user_is_anonymous()): ?>
-          hx-post="<?= helper_api_url('votes') ?>"
+          hx-post="<?= plugin_api_url('votes') ?>"
           hx-vals='<?= json_encode(['bugnote_id' => $bugnoteId, 'emoji' => $codePoint]) ?>'
           <?php endif; ?>
         >
