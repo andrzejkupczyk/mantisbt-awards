@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 use JetBrains\PhpStorm\ArrayShape;
 use Slim\App;
+use WebGarden\Termite\Http\Middleware\DetermineCurrentPlugin;
 use WebGarden\Termite\TermitePlugin;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+} else {
+    require_once __DIR__ . '/../../vendor/autoload.php';
+}
 
 final class AwardsPlugin extends TermitePlugin
 {
@@ -27,7 +32,7 @@ final class AwardsPlugin extends TermitePlugin
     {
         parent::register();
 
-        $this->version = '1.0.0';
+        $this->version = '1.0.2';
         $this->author = 'Andrzej Kupczyk';
         $this->contact = 'kontakt@andrzejkupczyk.pl';
         $this->url = 'https://github.com/andrzejkupczyk/mantisbt-awards';
@@ -128,7 +133,7 @@ final class AwardsPlugin extends TermitePlugin
             function (App $app) use ($plugin) {
                 $app->post('/votes', [$plugin, 'castVote']);
             }
-        );
+        )->add(new DetermineCurrentPlugin());
     }
 
     /**
@@ -161,7 +166,6 @@ final class AwardsPlugin extends TermitePlugin
      */
     public function castVote($request)
     {
-        plugin_push_current($this->basename);
         $parameters = array_map('intval', $request->getParams(['bugnote_id', 'emoji']));
 
         if (!current_user_is_anonymous()) {
