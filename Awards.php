@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use JetBrains\PhpStorm\ArrayShape;
 use Slim\App;
+use Slim\Http\Request;
 use WebGarden\Termite\Http\Middleware\DetermineCurrentPlugin;
 use WebGarden\Termite\TermitePlugin;
 
@@ -81,11 +81,9 @@ final class AwardsPlugin extends TermitePlugin
     }
 
     /**
-     * @param int $bugnoteId
-     *
      * @return void
      */
-    public function displayBugnoteAwards($bugnoteId)
+    public function displayBugnoteAwards(int $bugnoteId)
     {
         $votes = is_array($this->votes)
             ? $this->votes
@@ -95,13 +93,9 @@ final class AwardsPlugin extends TermitePlugin
     }
 
     /**
-     * @param string $event
-     * @param int $bugId
-     * @param int $bugnoteId
-     *
      * @return void
      */
-    public function handleBugnoteDeleted($event, $bugId, $bugnoteId)
+    public function handleBugnoteDeleted(string $event, int $bugId, int $bugnoteId)
     {
         reject_bugnote_votes($bugnoteId);
     }
@@ -117,23 +111,17 @@ final class AwardsPlugin extends TermitePlugin
     }
 
     /**
-     * @param array $payload
-     * @param string $event
+     * @param array{app: \Slim\App} $payload
      *
      * @return void
      */
-    public function handleRestApiRoutes(
-        $event,
-        #[ArrayShape(['app' => App::class])] $payload
-    ) {
+    public function handleRestApiRoutes(string $event, array $payload)
+    {
         $plugin = $this;
 
-        $payload['app']->group(
-            plugin_route_group(),
-            function (App $app) use ($plugin) {
-                $app->post('/votes', [$plugin, 'castVote']);
-            }
-        )->add(new DetermineCurrentPlugin());
+        $payload['app']->group(plugin_route_group(), function (App $app) use ($plugin) {
+            $app->post('/votes', [$plugin, 'castVote']);
+        })->add(new DetermineCurrentPlugin());;
     }
 
     /**
@@ -144,27 +132,22 @@ final class AwardsPlugin extends TermitePlugin
      *
      * @return void
      */
-    public function handleViewBugnote($event, $bugId, $bugnoteId, $isPrivate)
+    public function handleViewBugnote(string $event, int $bugId, int $bugnoteId, bool $isPrivate)
     {
         $this->displayBugnoteAwards($bugnoteId);
     }
 
     /**
-     * @param string $event
-     * @param int $bugId
      * @param \BugnoteData[] $bugnotes
      *
      * @return void
      */
-    public function handleViewBugnotesStart($event, $bugId, $bugnotes)
+    public function handleViewBugnotesStart(string $event, int $bugId, array $bugnotes)
     {
         $this->votes = fetch_bugnote_votes(array_column($bugnotes, 'id'));
     }
 
-    /**
-     * @param \Slim\Http\Request $request
-     */
-    public function castVote($request)
+    public function castVote(Request $request)
     {
         $parameters = array_map('intval', $request->getParams(['bugnote_id', 'emoji']));
 

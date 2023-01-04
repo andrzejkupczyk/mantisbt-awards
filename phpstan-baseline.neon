@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: components/list.php
+
+		-
+			message: "#^Variable \\$bugnoteId might not be defined\\.$#"
+			count: 2
+			path: components/list.php
+
+		-
+			message: "#^Class DbQuery referenced with incorrect case\\: DBQuery\\.$#"
+			count: 1
+			path: core/awards_api.php

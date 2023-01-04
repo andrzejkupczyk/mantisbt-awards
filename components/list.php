@@ -9,7 +9,7 @@
       <?php
       $defaults = ['voters_ids' => '', 'voters_usernames' => '', 'total' => 0];
 
-      foreach (plugin_config_get('emojis') as $codePoint => $emoji):
+      foreach ((array) plugin_config_get('emojis') as $codePoint => $emoji):
         $castedVotes = $votes[$bugnoteId][$codePoint] ?? $defaults;
         $currentUserVoted = in_array(auth_get_current_user_id(), explode(',', $castedVotes['voters_ids']));
         ?>
