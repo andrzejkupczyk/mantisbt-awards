@@ -32,7 +32,7 @@ final class AwardsPlugin extends TermitePlugin
     {
         parent::register();
 
-        $this->version = '1.0.2';
+        $this->version = '1.0.3';
         $this->author = 'Andrzej Kupczyk';
         $this->contact = 'kontakt@andrzejkupczyk.pl';
         $this->url = 'https://github.com/andrzejkupczyk/mantisbt-awards';
