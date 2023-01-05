@@ -10,7 +10,9 @@ Emoji awards plugin for [Mantis Bug Tracker](https://www.mantisbt.org/).
 Allows users to quickly give and receive feedback.
 
 Emojis can be awarded on comments (known as bugnotes or activities), 
-but more "awardable" objects will be supported in the near future. 
+but more "awardable" objects will be supported in the near future.
+
+If you find this plugin useful, feel free to try [my other plugins](https://github.com/search?q=user%3Aandrzejkupczyk+topic%3Amantisbt-plugin) as well.
 
 ## Installation
 
