@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Slim\App;
 use Slim\Http\Request;
+use Slim\Http\Response;
 use WebGarden\Termite\Http\Middleware\DetermineCurrentPlugin;
 use WebGarden\Termite\TermitePlugin;
 
@@ -41,6 +42,7 @@ final class AwardsPlugin extends TermitePlugin
     public function hooks(): array
     {
         return [
+            'EVENT_BUG_DELETED' => 'handleBugDeleted',
             'EVENT_BUGNOTE_DELETED' => 'handleBugnoteDeleted',
             'EVENT_LAYOUT_RESOURCES' => 'handleLayoutResources',
             'EVENT_REST_API_ROUTES' => 'handleRestApiRoutes',
@@ -90,6 +92,16 @@ final class AwardsPlugin extends TermitePlugin
             : fetch_bugnote_votes($bugnoteId);
 
         include __DIR__ . '/components/list.php';
+    }
+
+    /**
+     * Bug deletion removes bugnotes without signalling EVENT_BUGNOTE_DELETED
+     *
+     * @return void
+     */
+    public function handleBugDeleted(string $event, int $bugId)
+    {
+        reject_bug_votes($bugId);
     }
 
     /**
@@ -147,14 +159,27 @@ final class AwardsPlugin extends TermitePlugin
         $this->votes = fetch_bugnote_votes(array_column($bugnotes, 'id'));
     }
 
-    public function castVote(Request $request)
+    public function castVote(Request $request, Response $response)
     {
-        $parameters = array_map('intval', $request->getParams(['bugnote_id', 'emoji']));
+        $bugnoteId = (int) $request->getParam('bugnote_id');
+        $emoji = (int) $request->getParam('emoji');
 
-        if (!current_user_is_anonymous()) {
-            cast_bugnote_vote(...$parameters);
+        // Only allow votes on existing bugnotes the current user can view (incl. private bugnote rules)
+        if (!bugnote_exists($bugnoteId)
+            || !access_has_bugnote_level(config_get('view_bug_threshold'), $bugnoteId)
+        ) {
+            return $response->withStatus(HTTP_STATUS_FORBIDDEN);
         }
 
-        $this->displayBugnoteAwards($parameters['bugnote_id']);
+        if (!current_user_is_anonymous()) {
+            // Only accept the configured emojis to prevent storing arbitrary values
+            if (!array_key_exists($emoji, (array) plugin_config_get('emojis'))) {
+                return $response->withStatus(HTTP_STATUS_BAD_REQUEST);
+            }
+
+            cast_bugnote_vote($bugnoteId, $emoji);
+        }
+
+        $this->displayBugnoteAwards($bugnoteId);
     }
 }

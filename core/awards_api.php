@@ -82,3 +82,14 @@ function reject_bugnote_votes(int $bugnote_id)
         [$bugnote_id]
     );
 }
+
+/**
+ * @return void
+ */
+function reject_bug_votes(int $bug_id)
+{
+    db_query(
+        'DELETE FROM ' . plugin_table('bugnote_vote') . ' WHERE bugnote_id IN (SELECT id FROM {bugnote} WHERE bug_id = ?)',
+        [$bug_id]
+    );
+}
